@@ -1091,7 +1091,7 @@ def weather_forecast(request):
 def about(request):
     return render(request, 'dashboard/about.html')
 
-GEMINI_API_KEY = "AIzaSyDifS6MgQ-IDcyUmfa9kdjuYICxHxTPReo" 
+GEMINI_API_KEY = "your_api_key" 
 try:
     genai.configure(api_key=GEMINI_API_KEY)
     gemini_model = genai.GenerativeModel("models/gemini-flash-lite-latest")
