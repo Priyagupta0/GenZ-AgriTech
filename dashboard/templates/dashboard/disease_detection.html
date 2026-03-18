@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plant Disease Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at top left, #e0f2f1 0, #f5f5f5 40%, #e3f2fd 100%);
+            color: #102027;
+            padding: 20px;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow:
+                0 10px 25px rgba(15, 23, 42, 0.08),
+                0 0 0 1px rgba(148, 163, 184, 0.25);
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                padding: 24px;
+            }
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            color: #064e3b;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+
+        .upload-section {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .upload-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        form {
+            margin-top: 16px;
+        }
+
+        .upload-label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #0f172a;
+        }
+
+        .dropzone {
+            position: relative;
+            border-radius: 12px;
+            border: 2px dashed #cbd5e1;
+            padding: 24px;
+            background: linear-gradient(135deg, #f9fafb, #f8fafc);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dropzone:hover {
+            border-color: #22c55e;
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.12);
+        }
+
+        .dropzone-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            color: #16a34a;
+            font-size: 1.8rem;
+        }
+
+        .dropzone-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .dropzone-text {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .dropzone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .helper-text {
+            font-size: 0.78rem;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        .actions {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            border: none;
+            outline: none;
+            border-radius: 999px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 12px 24px rgba(22, 163, 74, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px rgba(22, 163, 74, 0.35);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .preview-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at top, #ecfdf3 0, #f9fafb 40%, #eff6ff 100%);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 300px;
+        }
+
+        .preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.25);
+            display: none;
+        }
+
+        .preview.placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .preview.placeholder span {
+            font-size: 2rem;
+        }
+
+        /* Disease Result Styles */
+        .result-card {
+            background: linear-gradient(135deg, #ecfdf3, #f0fdf4);
+            border: 2px solid #86efac;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .result-card.critical {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-color: #fca5a5;
+        }
+
+        .result-card.high {
+            background: linear-gradient(135deg, #fef08a, #fde047);
+            border-color: #facc15;
+        }
+
+        .result-card.medium {
+            background: linear-gradient(135deg, #e0e7ff, #ddd6fe);
+            border-color: #c4b5fd;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .result-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            background: rgba(22, 163, 74, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .result-card.critical .result-icon {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .result-card.high .result-icon {
+            background: rgba(249, 115, 22, 0.2);
+        }
+
+        .result-card.medium .result-icon {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .result-title {
+            flex-grow: 1;
+        }
+
+        .disease-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #064e3b;
+            margin-bottom: 4px;
+        }
+
+        .result-card.critical .disease-name {
+            color: #7f1d1d;
+        }
+
+        .result-card.high .disease-name {
+            color: #92400e;
+        }
+
+        .result-card.medium .disease-name {
+            color: #312e81;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .severity-badge.critical {
+            background: #fecaca;
+            color: #7f1d1d;
+        }
+
+        .severity-badge.high {
+            background: #fde047;
+            color: #92400e;
+        }
+
+        .severity-badge.medium {
+            background: #ddd6fe;
+            color: #312e81;
+        }
+
+        .severity-badge.none {
+            background: #bbf7d0;
+            color: #065f46;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+            margin-bottom: 4px;
+            opacity: 0.7;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .list-item {
+            font-size: 0.9rem;
+            margin: 8px 0;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .list-item:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            opacity: 0.7;
+        }
+
+        .footer-note {
+            margin-top: 16px;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <!-- Upload Card -->
+    <div class="card">
+        <div class="header">
+            <h1 class="title">🌱 Plant Disease Prediction</h1>
+            <p class="subtitle">
+                Upload a clear image of a plant leaf. Our AI model will analyze it and provide detailed disease information and treatment recommendations.
+            </p>
+        </div>
+
+        <div class="upload-section">
+            <div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <label class="upload-label" for="id_image">
+                        Plant Leaf Image
+                    </label>
+
+                    <div class="dropzone">
+                        <div class="dropzone-icon">🍃</div>
+                        <div class="dropzone-title">Click to upload or drag & drop</div>
+                        <div class="dropzone-text">PNG, JPG, GIF up to 10MB</div>
+                        <input
+                            id="id_image"
+                            type="file"
+                            name="image"
+                            accept="image/*"
+                            required
+                            onchange="previewImage(event)"
+                        >
+                    </div>
+
+                    <p class="helper-text">
+                        📸 For best results: use a clear, well-lit, close-up image of a single affected leaf
+                    </p>
+
+                    <div class="actions">
+                        <button type="submit" class="btn-primary">
+                            🔍 Analyze Image
+                            <span>⟶</span>
+                        </button>
+                    </div>
+                </form>
+
+                <p class="footer-note">
+                    ⚠️ This tool is for decision support only and should not replace expert agricultural advice.
+                </p>
+            </div>
+
+            <div class="preview-wrapper">
+                <div id="preview-placeholder" class="preview placeholder">
+                    <span>📷</span>
+                    <div>No image selected</div>
+                    <div style="font-size: 0.75rem; opacity: 0.6;">Your image will appear here</div>
+                </div>
+                <img id="preview-image" class="preview" alt="Selected plant leaf">
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease Result Card -->
+    {% if prediction %}
+        <div class="card">
+            {% if disease_info %}
+                {% if disease_info.severity == 'Critical' %}
+                    <div class="result-card critical">
+                {% elif disease_info.severity == 'High' %}
+                    <div class="result-card high">
+                {% elif disease_info.severity == 'Medium' %}
+                    <div class="result-card medium">
+                {% else %}
+                    <div class="result-card">
+                {% endif %}
+
+                    <div class="result-header">
+                        {% if disease_info.severity == 'Critical' %}
+                            <div class="result-icon">⚠️</div>
+                        {% elif disease_info.severity == 'High' %}
+                            <div class="result-icon">🚨</div>
+                        {% elif disease_info.severity == 'Medium' %}
+                            <div class="result-icon">⚡</div>
+                        {% else %}
+                            <div class="result-icon">✓</div>
+                        {% endif %}
+                        <div class="result-title">
+                            <div class="disease-name">{{ disease_info.disease_name }}</div>
+                            <span class="severity-badge {{ disease_info.severity|lower }}">
+                                {{ disease_info.severity }} Severity
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-box">
+                            <div class="info-label">Affected Crop</div>
+                            <div class="info-value">{{ disease_info.affected_crop }}</div>
+                        </div>
+                        <div class="info-box">
+                            <div class="info-label">Caused By</div>
+                            <div class="info-value">{{ disease_info.causes }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Symptoms Section -->
+                    {% if disease_info.symptoms %}
+                        <div class="section">
+                            <div class="section-title">📋 Symptoms</div>
+                            {% for symptom in disease_info.symptoms %}
+                                <div class="list-item">{{ symptom }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Solutions Section -->
+                    {% if disease_info.solutions %}
+                        <div class="section">
+                            <div class="section-title">💊 Treatment Solutions</div>
+                            {% for solution in disease_info.solutions %}
+                                <div class="list-item">{{ solution }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Prevention Section -->
+                    <div class="section">
+                        <div class="section-title">🛡️ Prevention Strategies</div>
+                        <div class="list-item">{{ disease_info.prevention }}</div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="result-card">
+                    <div class="result-header">
+                        <div class="result-icon">ℹ️</div>
+                        <div class="result-title">
+                            <div class="disease-name">Prediction: {{ prediction }}</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 12px; color: #64748b;">
+                        Disease information could not be loaded. Please check the model output.
+                    </p>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function previewImage(event) {
+        const file = event.target.files && event.target.files[0];
+        const img = document.getElementById('preview-image');
+        const placeholder = document.getElementById('preview-placeholder');
+
+        if (!file) {
+            img.style.display = 'none';
+            placeholder.style.display = 'flex';
+            img.src = '';
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            img.src = e.target.result;
+            img.style.display = 'block';
+            placeholder.style.display = 'none';
+        };
+        reader.readAsDataURL(file);
+    }
+</script>
+</body>
+</html>

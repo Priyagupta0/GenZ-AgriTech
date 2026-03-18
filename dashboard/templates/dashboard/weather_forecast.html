@@ -1,0 +1,98 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+<style>
+  header { box-shadow: none !important; border-bottom: 0 !important; }
+</style>
+
+<div class="max-w-3xl mx-auto">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-3xl md:text-4xl font-extrabold">🌦 Weather Forecast</h1>
+  </div>
+
+  <div class="bg-white/10 backdrop-blur border border-white/20 rounded-2xl shadow p-6 md:p-8">
+    <div class="grid md:grid-cols-[1fr_auto] gap-3 md:gap-4">
+      <input id="cityInput" type="text" placeholder="Enter city name (e.g., Pune)" class="w-full px-4 py-3 rounded-xl bg-white/90 text-gray-900 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-400" />
+      <button id="getWeatherBtn" class="px-5 py-3 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-500 shadow border border-white/20">Get Weather</button>
+    </div>
+
+    <div id="weatherResult" class="mt-6 text-gray-900">
+      <div class="text-white/80">Enter a city and click Get Weather to see current conditions.</div>
+    </div>
+  </div>
+
+  <div class="mt-8 grid md:grid-cols-3 gap-4">
+    <div class="p-4 rounded-xl bg-white/10 border border-white/20">
+      <div class="text-sm text-white/80">Tip</div>
+      <div class="text-white font-semibold">Use local spelling for best results (e.g., Bengaluru vs Bangalore).</div>
+    </div>
+    <div class="p-4 rounded-xl bg-white/10 border border-white/20">
+      <div class="text-sm text-white/80">Planning</div>
+      <div class="text-white font-semibold">Check humidity and wind before spraying or harvesting.</div>
+    </div>
+    <div class="p-4 rounded-xl bg-white/10 border border-white/20">
+      <div class="text-sm text-white/80">Air Quality</div>
+      <div class="text-white font-semibold">PM2.5 levels help plan work conditions outdoors.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    async function getWeather(){
+      const cityInput = document.getElementById('cityInput');
+      const resultDiv = document.getElementById('weatherResult');
+      const city = (cityInput.value || 'London').trim();
+      resultDiv.innerHTML = '<div class="text-white">Loading…</div>';
+      try{
+        const res = await fetch(`/get_weather/?city=${encodeURIComponent(city)}`);
+        const data = await res.json();
+        if(data.error){
+          const msg = (data.error && data.error.message) ? data.error.message : 'Failed to fetch weather data.';
+          resultDiv.innerHTML = `<div class="p-4 rounded-xl bg-red-100 text-red-800 border border-red-200">${msg}</div>`;
+          return;
+        }
+        const aqi = data.current && data.current.air_quality && typeof data.current.air_quality.pm2_5 === 'number' ? data.current.air_quality.pm2_5.toFixed(1) : 'N/A';
+        resultDiv.innerHTML = `
+          <div class="rounded-2xl overflow-hidden bg-white text-gray-800 shadow">
+            <div class="p-5 border-b flex items-center justify-between gap-4">
+              <div>
+                <div class="text-xl font-bold">${data.location.name}, ${data.location.region || data.location.country}</div>
+                <div class="text-sm text-gray-500">Updated: ${data.current.last_updated || 'Just now'}</div>
+              </div>
+              <img class="w-12 h-12" src="${data.current.condition.icon}" alt="Weather icon" />
+            </div>
+            <div class="p-5 grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="p-3 rounded-xl bg-gray-50 border">
+                <div class="text-xs uppercase text-gray-500">Temperature</div>
+                <div class="text-2xl font-extrabold">${data.current.temp_c}°C</div>
+              </div>
+              <div class="p-3 rounded-xl bg-gray-50 border">
+                <div class="text-xs uppercase text-gray-500">Condition</div>
+                <div class="font-semibold">${data.current.condition.text}</div>
+              </div>
+              <div class="p-3 rounded-xl bg-gray-50 border">
+                <div class="text-xs uppercase text-gray-500">Humidity</div>
+                <div class="text-2xl font-extrabold">${data.current.humidity}%</div>
+              </div>
+              <div class="p-3 rounded-xl bg-gray-50 border">
+                <div class="text-xs uppercase text-gray-500">Wind</div>
+                <div class="text-2xl font-extrabold">${data.current.wind_kph} kph</div>
+              </div>
+              <div class="p-3 rounded-xl bg-gray-50 border col-span-2 md:col-span-4">
+                <div class="text-xs uppercase text-gray-500">Air Quality PM2.5</div>
+                <div class="text-xl font-bold">${aqi}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch(err){
+        resultDiv.innerHTML = '<div class="p-4 rounded-xl bg-red-100 text-red-800 border border-red-200">Failed to fetch weather data.</div>';
+        console.error(err);
+      }
+    }
+    document.getElementById('getWeatherBtn').addEventListener('click', getWeather);
+  })();
+</script>
+
+{% endblock %}

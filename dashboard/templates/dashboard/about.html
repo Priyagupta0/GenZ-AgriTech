@@ -1,0 +1,63 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+<section class="max-w-5xl mx-auto">
+  <div class="rounded-2xl overflow-hidden bg-gradient-to-r from-green-600 to-green-500 text-white p-8 shadow animate-fade-in-up">
+    <h1 class="text-3xl md:text-4xl font-extrabold">About GenZ AgriTech</h1>
+    <p class="mt-2 text-green-50">Comprehensive AI-powered agricultural platform offering disease detection, weather forecasts, soil analysis and 24/7 AI chatbot support.</p>
+  </div>
+
+  <div class="mt-10 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200 p-10 animate-fade-in-up animation-delay-500">
+    <h2 class="text-2xl font-semibold text-green-800">About Project</h2>
+    <p class="mt-2 text-gray-700">GenZ AgriTech delivers comprehensive AI-powered agricultural solutions designed to empower farmers with cutting-edge technology and actionable insights.</p>
+    <ul class="mt-4 list-disc list-inside text-gray-600">
+      <li><strong>Complete Service Suite:</strong> Plant disease detection, weather forecasting, AI chatbot assistance, soil type detection and Government Schemes updates.</li>
+      <li><strong>Future Enhancements:</strong> Advanced analytics, IoT integration, and expanded AI capabilities for sustainable farming</li>
+    </ul>
+  </div>
+
+  <div class="mt-10 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border border-green-200 p-10 animate-fade-in-up animation-delay-600">
+    <h2 class="text-2xl font-semibold text-green-800">Vision</h2>
+    <p class="mt-2 text-gray-700">Empower every farmer with actionable AI insights at their fingertips, accessible on any device.</p>
+  </div>
+</section>
+
+<section class="mt-14">
+  <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 text-center animate-fade-in-up animation-delay-900">Our Services</h2>
+  <p class="text-center text-gray-600 mt-2 max-w-3xl mx-auto animate-fade-in-up animation-delay-1000">Explore our AI-powered agricultural solutions available now.</p>
+  <div class="mt-8 relative bg-gradient-to-br from-green-600 to-green-500 shadow rounded-2xl p-6 animate-fade-in-up animation-delay-1100">
+
+    <div class="relative mx-auto w-full max-w-3xl h-[420px] md:h-[480px]">
+
+      <div class="absolute inset-6 md:inset-10 rounded-full border-2 border-green-200"></div>
+      <div class="absolute inset-16 md:inset-20 rounded-full border border-green-100"></div>
+
+
+      <a href="/disease-detection/" class="absolute top-1/2 -mt-6 right-2 md:right-10 bg-green-50 text-green-800 rounded-2xl shadow-lg border border-green-100 px-4 py-3 flex items-center gap-2 hover:shadow-xl transition-all duration-300 animate-bounce-in animation-delay-1200">
+        <span>🍃</span><span class="text-sm font-semibold">Plant Disease Detection</span>
+      </a>
+
+      <a href="/weather-forecast/" class="absolute bottom-6 right-12 md:right-28 bg-green-50 text-green-800 rounded-2xl shadow-lg border border-green-100 px-4 py-3 flex items-center gap-2 hover:shadow-xl transition-all duration-300 animate-bounce-in animation-delay-1300">
+        <span>🌤</span><span class="text-sm font-semibold">Weather Forecast</span>
+      </a>
+
+      <a href="#chat-launcher" class="absolute top-1/2 -mt-6 left-0 md:left-6 bg-green-50 text-green-800 rounded-2xl shadow-lg border border-green-100 px-4 py-3 flex items-center gap-2 hover:shadow-xl transition-all duration-300 animate-bounce-in animation-delay-1400">
+        <span>💬</span><span class="text-sm font-semibold">AI Chatbot</span>
+      </a>
+
+      <a href="/soil-detection/" class="absolute -top-2 left-6 md:left-16 bg-green-50 text-green-800 rounded-2xl shadow-lg border border-green-100 px-4 py-3 flex items-center gap-2 hover:shadow-xl transition-all duration-300 animate-bounce-in animation-delay-1500">
+        <span>🌍</span><span class="text-sm font-semibold">Soil Type Detection</span>
+      </a>
+
+      <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-center">
+        <div class="w-40 h-40 md:w-48 md:h-48 rounded-full bg-gradient-to-br from-green-600 to-green-500 text-white flex items-center justify-center shadow-lg animate-fade-in-up animation-delay-1800">
+          <div>
+            <div class="text-xs uppercase tracking-widest text-green-100">GenZ AgriTech</div>
+            <div class="text-lg md:text-xl font-extrabold">AI Core</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

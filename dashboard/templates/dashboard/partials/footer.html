@@ -1,0 +1,45 @@
+<footer id="footer" class="mt-20">
+  <div class="bg-gradient-to-r from-green-900/90 via-green-800/80 to-green-700/70">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-16 flex flex-col md:flex-row gap-12">
+      <div class="flex-1 grid gap-12 md:grid-cols-2">
+        <div class="animate-fade-in-up">
+          <div class="flex items-center gap-3">
+            <span class="text-4xl">🌱</span>
+            <span class="text-3xl font-extrabold text-white">GenZ AgriTech</span>
+          </div>
+          <p class="mt-6 text-lg text-green-100 leading-relaxed">Empowering farmers with AI-driven agricultural insights
+            for sustainable and productive farming.</p>
+          <div class="mt-8 p-6 bg-green-700 rounded-xl border border-green-500 shadow-sm">
+            <p class="text-white font-bold text-lg mb-2">🎓 Final Year Project</p>
+            <p class="text-green-100 leading-relaxed">This is our final year academic project showcasing AI applications
+              in
+              modern agriculture.</p>
+          </div>
+        </div>
+        <div class="animate-fade-in-up animation-delay-300">
+          <div class="font-bold text-white text-xl mb-6">Features</div>
+          <ul class="space-y-3 text-green-100 text-lg">
+            <li><a class="hover:text-green-200 transition-colors duration-200" href="/disease-detection/">🍃 Disease
+                Detection</a></li>
+            <li><a class="hover:text-green-200 transition-colors duration-200" href="/weather-forecast/">🌤 Weather
+                Forecast</a></li>
+            <li><a class="hover:text-green-200 transition-colors duration-200" href="/#chat-launcher">💬 AI Chatbot</a></li>
+            <li><a class="hover:text-green-200 transition-colors duration-200" href="/soil-detection/">🌍 Soil Type Detection</a></li>
+            <li><a class="hover:text-green-200 transition-colors duration-200" href="/government-schemes/">👀 Government Schemes</a></li>
+          </ul> 
+        </div>
+      </div>
+      
+      <div class="animate-fade-in-up flex-shrink-0">
+        {% load static %}
+        <img src="{% static 'assets/images/image.jpeg' %}" alt="GenZ AgriTech" class="w-full h-auto max-w-xs rounded-xl shadow-lg border-2 border-white/20 hover:scale-105 transition-transform duration-300" onerror="this.src='https://via.placeholder.com/300x200/22c55e/ffffff?text=GenZ+AgriTech'">
+      </div>
+    </div>
+    <div class="border-t border-green-600 bg-green-800">
+      <div
+        class="max-w-7xl mx-auto px-4 md:px-8 py-8 text-base md:text-lg flex flex-col md:flex-row items-center justify-center gap-4 text-green-100">
+        <div>© 2026 GenZ AgriTech. All rights reserved. | Final Year Project</div>
+      </div>
+    </div>
+  </div>
+</footer>

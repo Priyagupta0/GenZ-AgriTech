@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GenZ AgriTech</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f33e.png" />
+  <style>
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #a3a3a3;
+      border-radius: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f3f4f6;
+    }
+
+    /* Mobile 3-line clamp */
+    @media (max-width: 768px) {
+      .clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+
+    /* Custom Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounceIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.3) rotate(-10deg);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.05) rotate(5deg);
+      }
+
+      70% {
+        transform: scale(0.95) rotate(-2deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes tada {
+      0% {
+        transform: scale(1) rotate(0deg);
+      }
+
+      10%,
+      20% {
+        transform: scale(0.9) rotate(-3deg);
+      }
+
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: scale(1.1) rotate(3deg);
+      }
+
+      40%,
+      60%,
+      80% {
+        transform: scale(1.1) rotate(-3deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .animate-fade-in-up {
+      opacity: 0;
+    }
+
+    .animate-fade-in-up.animate-active {
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-up.animate-reset {
+      opacity: 0;
+      animation: none;
+    }
+
+    .animate-bounce-in {
+      opacity: 0;
+    }
+
+    .animate-bounce-in.animate-active {
+      animation: bounceIn 0.6s ease-out forwards;
+    }
+
+    .animate-bounce-in.animate-reset {
+      opacity: 0;
+      animation: none;
+    }
+
+    .animate__tada {
+      opacity: 0;
+    }
+
+    .animate__tada.animate-active {
+      animation: tada 1s ease-out forwards;
+    }
+
+    .animate__tada.animate-reset {
+      opacity: 0;
+      animation: none;
+    }
+
+    .animation-delay-100 {
+      animation-delay: 0.1s;
+    }
+
+    .animation-delay-200 {
+      animation-delay: 0.2s;
+    }
+
+    .animation-delay-300 {
+      animation-delay: 0.3s;
+    }
+
+    .animation-delay-400 {
+      animation-delay: 0.4s;
+    }
+
+    .animation-delay-500 {
+      animation-delay: 0.5s;
+    }
+
+    .animation-delay-600 {
+      animation-delay: 0.6s;
+    }
+
+    .animation-delay-700 {
+      animation-delay: 0.7s;
+    }
+
+    .animation-delay-750 {
+      animation-delay: 0.75s;
+    }
+
+    .animation-delay-800 {
+      animation-delay: 0.8s;
+    }
+
+    .animation-delay-0 {
+      animation-delay: 0s;
+    }
+
+    .animation-delay-900 {
+      animation-delay: 0.9s;
+    }
+
+    .animation-delay-1000 {
+      animation-delay: 1.0s;
+    }
+
+    .animation-delay-1100 {
+      animation-delay: 1.1s;
+    }
+
+    .animation-delay-1200 {
+      animation-delay: 1.2s;
+    }
+
+    .animation-delay-1300 {
+      animation-delay: 1.3s;
+    }
+
+    .animation-delay-1400 {
+      animation-delay: 1.4s;
+    }
+
+    .animation-delay-1500 {
+      animation-delay: 1.5s;
+    }
+
+    .animation-delay-1600 {
+      animation-delay: 1.6s;
+    }
+
+    .animation-delay-1700 {
+      animation-delay: 1.7s;
+    }
+
+    .animation-delay-1800 {
+      animation-delay: 1.8s;
+    }
+
+    /* Loading Screen Styles */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f4c2a 0%, #1a5f3f 25%, #2d7a57 50%, #52b788 75%, #74c69d 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .loading-content {
+      text-align: center;
+      position: relative;
+    }
+
+    .project-name {
+      font-size: 4rem;
+      font-weight: 900;
+      color: white;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(116, 198, 157, 0.6);
+      animation: fadeInScale 1.5s ease-out forwards, glow 2s ease-in-out infinite alternate;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .project-name .krishi {
+      display: inline-block;
+      animation: slideInLeft 1s ease-out forwards, bounce 2s ease-in-out 1.5s infinite;
+      opacity: 0;
+      position: relative;
+      background: linear-gradient(45deg, #ffffff, #74c69d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .project-name .mitra {
+      display: inline-block;
+      animation: slideInRight 1s ease-out 0.5s forwards, bounce 2s ease-in-out 1.7s infinite;
+      opacity: 0;
+      position: relative;
+      background: linear-gradient(45deg, #52b788, #95d5b2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .project-name::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: -20px;
+      bottom: -20px;
+      border: 3px solid transparent;
+      border-radius: 20px;
+      animation: borderRotate 3s linear 2s infinite;
+      opacity: 0;
+      animation-delay: 2s;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #d8f3dc;
+      animation: fadeInUp 1s ease-out 1.2s forwards, pulse 2s ease-in-out 2.5s infinite;
+      opacity: 0;
+      margin-top: 1rem;
+      text-shadow: 0 0 15px rgba(216, 243, 220, 0.8);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .loading-spinner {
+      display: none;
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+    }
+
+    .particle {
+      position: absolute;
+      background: linear-gradient(45deg, #74c69d, #95d5b2);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 6s ease-in-out infinite;
+      box-shadow: 0 0 10px rgba(116, 198, 157, 0.4);
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, #ffffff, #d8f3dc);
+      border-radius: 50%;
+      animation: sparkle 1.5s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+
+    .wave-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(116, 198, 157, 0.2), transparent);
+      animation: wave 3s ease-in-out infinite;
+    }
+
+    .leaf-icon {
+      display: none;
+    }
+
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-10px);
+      }
+
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    @keyframes borderRotate {
+      0% {
+        transform: rotate(0deg);
+        border-color: rgba(255, 255, 255, 0.4);
+        opacity: 1;
+      }
+
+      25% {
+        border-color: rgba(116, 198, 157, 0.8);
+      }
+
+      50% {
+        border-color: rgba(149, 213, 178, 0.8);
+      }
+
+      75% {
+        border-color: rgba(82, 183, 136, 0.8);
+      }
+
+      100% {
+        transform: rotate(360deg);
+        border-color: rgba(255, 255, 255, 0.4);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+      }
+    }
+
+    @keyframes sparkle {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes wave {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    @keyframes leafFloat {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.7;
+      }
+
+      90% {
+        opacity: 0.7;
+      }
+
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes glow {
+      0% {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 0 0 60px rgba(116, 198, 157, 0.6);
+      }
+
+      100% {
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 80px rgba(116, 198, 157, 0.8), 0 0 100px rgba(149, 213, 178, 0.4);
+      }
+    }
+
+    @keyframes slideInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+      }
+
+      50% {
+        transform: translateY(-100px) rotate(180deg);
+        opacity: 0.8;
+      }
+    }
+
+    .hide-loading {
+      animation: fadeOut 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeOut {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .project-name {
+        font-size: 3rem;
+      }
+
+      .tagline {
+        font-size: 1rem;
+      }
+    }
+
+
+    @keyframes navbarGradient {
+      0% {
+        background-position: -200% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    .navbar-gradient {
+      background: linear-gradient(90deg, #74c69d 0%, #52b788 25%, #1a5f3f 50%, #52b788 75%, #74c69d 100%);
+      background-size: 200% 100%;
+      animation: navbarGradient 0.8s ease-out;
+    }
+  </style>
+</head>
+
+<body class="bg-white text-gray-800">
+
+  <div id="loadingScreen" class="loading-screen" style="display: none;">
+    <div class="particles" id="particles"></div>
+    <div class="wave-text">
+      <div class="wave"></div>
+    </div>
+    <div class="loading-content">
+      <div class="project-name">
+        <span class="krishi">GenZ</span><span class="mitra">AgriTech</span>
+      </div>
+      <div class="tagline">Next Gen AI Solutions Empowering Farmers</div>
+    </div>
+    <div class="sparkles" id="sparkles"></div>
+  </div>
+
+  <div class="min-h-screen flex flex-col">
+
+    <main class="flex-1 flex flex-col">
+      <header class="bg-white text-gray-800 shadow-lg border-b border-gray-200">
+        <div id="main-navbar"
+          class="sticky top-0 z-20 bg-white text-gray-800 shadow-lg border-b border-gray-200 px-4 md:px-8 py-4 md:py-5 flex items-center justify-between gap-4">
+          <a href="/" class="flex items-center gap-3">
+            <span class="text-3xl md:text-4xl">🌱</span>
+            <span class="text-2xl md:text-3xl font-extrabold tracking-wide">GenZ<span
+                class="text-green-600">AgriTech</span></span>
+          </a>
+          <nav class="hidden md:flex items-center gap-8 text-base">
+            <a href="/" class="px-3 py-2 rounded-lg hover:bg-green-50 font-medium">Home</a>
+            <details class="relative">
+              <summary class="px-3 py-2 rounded-lg hover:bg-green-50 list-none cursor-pointer font-medium">Services
+                ▾
+              </summary>
+              <div
+                class="absolute left-0 mt-2 w-56 bg-white text-gray-800 border border-gray-200 rounded-lg shadow-xl p-3 z-50">
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/disease-detection/">🍃 Plant Disease Detection</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/weather-forecast/">🌤 Weather Forecast</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/soil-detection">🌍 Soil Type Detection</a>
+              </div>
+            </details>
+            <a href="/about/" class="px-3 py-2 rounded-lg hover:bg-green-50 font-medium">About Project</a>
+            <a href="/contact/" class="px-3 py-2 rounded-lg hover:bg-green-50 font-medium">Contact Us</a>
+          </nav>
+          <div class="md:hidden">
+            <details class="relative">
+              <summary class="px-3 py-2 rounded-lg bg-green-50">Menu ▾</summary>
+              <div
+                class="absolute right-0 mt-2 w-56 bg-white text-gray-800 border border-gray-200 rounded-lg shadow-xl p-3 z-50">
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/">🏠 Home</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/disease-detection/">🍃 Plant Disease Detection</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/weather-forecast/">🌤 Weather Forecast</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="#chat-launcher">💬 AI Chatbot</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/soil-detection/">🌍 Soil Type Detection</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/about/">ℹ️ About Project</a>
+                <a class="block px-3 py-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                  href="/contact/">📞 Contact Us</a>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="p-4 md:p-10 max-w-[1600px] mx-auto w-full">
+          {% block content %}{% endblock %}
+        </div>
+
+        {% block footer %}{% endblock %}
+    </main>
+
+  
+    <button id="chat-launcher" aria-label="Open Chatbot"
+      class="fixed bottom-6 right-6 z-40 w-14 h-14 md:w-16 md:h-16 rounded-full bg-green-600 text-white shadow-2xl border border-gray-200 flex items-center justify-center hover:bg-green-500 hover:scale-105 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-7 h-7 md:w-8 md:h-8">
+        <path
+          d="M12 3C6.477 3 2 6.79 2 11.465c0 2.44 1.274 4.63 3.29 6.082-.09 .74-.39 1.92-1.19 3.063-.19.273.08.628.4.56 1.92-.41 3.28-1.14 4.06-1.67.99.24 2.06.37 3.14.37 5.523 0 10-3.79 10-8.465S17.523 3 12 3z" />
+      </svg>
+    </button>
+
+    <div id="chat-panel"
+      class="hidden fixed bottom-24 right-6 z-50 w-[360px] md:w-[420px] h-[520px] md:h-[560px] bg-white text-gray-800 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col">
+    
+      <div class="flex items-center justify-between px-4 py-3 bg-green-50 text-gray-800 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <div class="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center"><i class="fa fa-user"
+              aria-hidden="true"></i></div>
+          <div class="font-semibold">AI Assistant</div>
+        </div>
+        <button id="chat-close" class="text-gray-600 hover:text-red-600 font-semibold" aria-label="Close">✕</button>
+      </div>
+ 
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-white to-green-50">
+      </div>
+    
+      <div id="chat-quick" class="px-3 pt-2 pb-1 border-t bg-white flex flex-wrap gap-2">
+        <button data-quick="Hello"
+          class="px-3 py-1 text-sm rounded-full bg-green-100 text-green-800 hover:bg-green-200">Hello</button>
+        <button data-quick="Thank you"
+          class="px-3 py-1 text-sm rounded-full bg-green-100 text-green-800 hover:bg-green-200">Thank you</button>
+        <button data-quick="Help"
+          class="px-3 py-1 text-sm rounded-full bg-green-100 text-green-800 hover:bg-green-200">Help</button>
+      </div>
+
+      <form id="chat-form" class="p-3 border-t bg-white flex items-center gap-2">
+        <input id="chat-input" type="text" placeholder="Ask GenZ AgriTech..."
+          class="flex-1 px-3 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-green-400" />
+        <button class="px-4 py-2 bg-green-600 text-white rounded-full hover:bg-green-500">Send</button>
+      </form>
+    </div>
+
+    <script>
+      function getCSRF() {
+        const name = 'csrftoken';
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+
+      (function () {
+        const launcher = document.getElementById('chat-launcher');
+        const panel = document.getElementById('chat-panel');
+        const closeBtn = document.getElementById('chat-close');
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('chat-input');
+        const messages = document.getElementById('chat-messages');
+        const quick = document.getElementById('chat-quick');
+        if (!launcher || !panel) return;
+        function resetChat() {
+          messages.innerHTML = '';
+          const row = document.createElement('div');
+          row.className = 'flex gap-2 items-start';
+          row.innerHTML = '<div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0"><i class="fa fa-user"></i></div>' +
+            '<div class="bg-gray-100 text-gray-800 px-3 py-2 rounded-2xl rounded-tl-none shadow">Hi! How can I help you today?</div>';
+          messages.appendChild(row);
+          messages.scrollTop = messages.scrollHeight;
+        }
+        function openPanel() { panel.classList.remove('hidden'); resetChat(); }
+        function closePanel() { panel.classList.add('hidden'); resetChat(); }
+        launcher.addEventListener('click', function () {
+          if (panel.classList.contains('hidden')) openPanel(); else closePanel();
+        });
+
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function () {
+            closePanel();
+          });
+        }
+
+        function parseMarkdown(text) {
+          if (!text) return '';
+          
+          let parsed = text;
+          
+          parsed = parsed.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+          
+          parsed = parsed.replace(/\*(.+?)\*/g, '<em>$1</em>');
+          
+          parsed = parsed.replace(/`(.+?)`/g, '<code class="bg-gray-200 px-1 rounded text-sm">$1</code>');
+          
+          parsed = parsed.replace(/\n\n/g, '<br><br>');
+          parsed = parsed.replace(/\n/g, '<br>');
+          
+          parsed = parsed.replace(/^- (.+)$/gm, '• $1');
+          
+          parsed = parsed.replace(/^(\d+\.) (.+)$/gm, '<br>$1 $2');
+          
+          return parsed.trim();
+        }
+
+        function appendMessage(text, sender) {
+          const div = document.createElement('div');
+          div.className = `flex items-start gap-3 ${sender === 'user' ? 'justify-end' : ''}`;
+          
+          const formattedText = sender === 'user' ? text : parseMarkdown(text);
+          
+          if (sender === "user") {
+            div.innerHTML = `
+              <div class="max-w-xs md:max-w-md p-3 rounded-lg bg-green-100 text-green-800">
+                ${formattedText}
+              </div>
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold">
+                  You
+                </div>
+              </div>
+            `;
+          } else {
+            div.innerHTML = `
+              <div class="flex-shrink-0">
+                <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white text-sm font-bold">
+                  AI
+                </div>
+              </div>
+              <div class="max-w-xs md:max-w-md p-3 rounded-lg bg-gray-100 text-gray-800">
+                ${formattedText}
+              </div>
+            `;
+          }
+          messages.appendChild(div);
+          messages.scrollTop = messages.scrollHeight;
+        }
+
+        if (quick) {
+          quick.addEventListener('click', function (e) {
+            const b = e.target.closest('button[data-quick]');
+            if (!b) return;
+            input.value = b.getAttribute('data-quick');
+            form.dispatchEvent(new Event('submit', { cancelable: true }));
+          });
+        }
+
+        if (form) {
+          form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const text = (input.value || '').trim();
+            if (!text) return;
+            appendMessage(text, 'user');
+            input.value = '';
+            appendMessage('Typing…', 'assistant');
+            try {
+              const res = await fetch('/chat/api/', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': getCSRF(),
+                },
+                body: JSON.stringify({ message: text })
+              });
+              
+              if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+              }
+              
+              const data = await res.json();
+              
+              const messageDiv = messages.lastElementChild.querySelector('.max-w-xs, .max-w-md');
+              const formattedReply = parseMarkdown(data.reply || 'No reply');
+              if (messageDiv) {
+                messageDiv.innerHTML = formattedReply;
+              }
+            } catch (err) {
+              console.error('Chat error:', err);
+              const errorDiv = messages.lastElementChild.querySelector('.max-w-xs, .max-w-md');
+              if (errorDiv) {
+                errorDiv.innerHTML = 'Error connecting to chat. Please try again.';
+              }
+            }
+          });
+        }
+      })();
+
+      (function () {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const element = entry.target;
+
+            if (entry.isIntersecting) {
+              
+              element.classList.remove('animate-active');
+              element.classList.add('animate-reset');
+
+             
+              void element.offsetWidth;
+
+             
+              element.classList.remove('animate-reset');
+
+              const delay = element.classList.contains('animation-delay-0') ? 0 :
+                element.classList.contains('animation-delay-100') ? 100 :
+                  element.classList.contains('animation-delay-200') ? 200 :
+                    element.classList.contains('animation-delay-300') ? 300 :
+                      element.classList.contains('animation-delay-400') ? 400 :
+                        element.classList.contains('animation-delay-500') ? 500 :
+                          element.classList.contains('animation-delay-600') ? 600 :
+                            element.classList.contains('animation-delay-700') ? 700 :
+                              element.classList.contains('animation-delay-750') ? 750 :
+                                element.classList.contains('animation-delay-800') ? 800 :
+                                  element.classList.contains('animation-delay-900') ? 900 :
+                                    element.classList.contains('animation-delay-1000') ? 1000 :
+                                      element.classList.contains('animation-delay-1100') ? 1100 :
+                                        element.classList.contains('animation-delay-1200') ? 1200 :
+                                          element.classList.contains('animation-delay-1300') ? 1300 :
+                                            element.classList.contains('animation-delay-1400') ? 1400 :
+                                              element.classList.contains('animation-delay-1500') ? 1500 :
+                                                element.classList.contains('animation-delay-1600') ? 1600 :
+                                                  element.classList.contains('animation-delay-1700') ? 1700 :
+                                                    element.classList.contains('animation-delay-1800') ? 1800 : 0;
+
+              setTimeout(() => {
+                element.classList.add('animate-active');
+              }, delay);
+            } else {
+              element.classList.remove('animate-active');
+              element.classList.add('animate-reset');
+            }
+          });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const animatedElements = document.querySelectorAll('.animate-fade-in-up, .animate-bounce-in');
+          animatedElements.forEach(element => {
+            observer.observe(element);
+          });
+        });
+      })();
+
+      (function () {
+        const isFirstVisit = !sessionStorage.getItem('genzAgriTechVisited');
+        const isHomePage = window.location.pathname === '/' || window.location.pathname === '/dashboard/';
+
+        if (isHomePage && isFirstVisit) {
+          sessionStorage.setItem('genzAgriTechVisited', 'true');
+
+          const loadingScreen = document.getElementById('loadingScreen');
+          if (loadingScreen) {
+            loadingScreen.style.display = 'flex'; 
+          }
+
+          const particlesContainer = document.getElementById('particles');
+          if (particlesContainer) {
+            for (let i = 0; i < 30; i++) {
+              const particle = document.createElement('div');
+              particle.className = 'particle';
+              particle.style.width = Math.random() * 8 + 4 + 'px';
+              particle.style.height = particle.style.width;
+              particle.style.left = Math.random() * 100 + '%';
+              particle.style.top = Math.random() * 100 + '%';
+              particle.style.animationDelay = Math.random() * 6 + 's';
+              particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+              particlesContainer.appendChild(particle);
+            }
+          }
+
+          const sparklesContainer = document.getElementById('sparkles');
+          if (sparklesContainer) {
+            for (let i = 0; i < 15; i++) {
+              const sparkle = document.createElement('div');
+              sparkle.className = 'sparkle';
+              sparkle.style.left = Math.random() * 100 + '%';
+              sparkle.style.top = Math.random() * 100 + '%';
+              sparkle.style.animationDelay = Math.random() * 1.5 + 's';
+              sparklesContainer.appendChild(sparkle);
+            }
+          }
+
+          setTimeout(() => {
+            if (loadingScreen) {
+              loadingScreen.classList.add('hide-loading');
+              setTimeout(() => {
+                loadingScreen.style.display = 'none';
+              }, 500);
+            }
+          }, 3500);
+        }
+      })();
+
+      (function () {
+        const navbar = document.getElementById('main-navbar');
+        if (navbar) {
+          navbar.addEventListener('mouseenter', function () {
+            navbar.classList.add('navbar-gradient');
+          });
+
+          navbar.addEventListener('mouseleave', function () {
+            navbar.classList.remove('navbar-gradient');
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
