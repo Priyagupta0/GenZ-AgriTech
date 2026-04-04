@@ -9,6 +9,10 @@
 
 ---
 
+### Publication Link -- [Read Here](https://ijsret.com/2026/04/04/genz-agritech-an-intelligent-agricultural-platform-using-ai-and-ml/)
+
+---
+
 ## 🌿 About
 
 GenZ AgriTech is a comprehensive, production-ready AI-driven agricultural platform that addresses the critical challenges faced by farmers — from plant disease outbreaks and weather uncertainty to soil degradation and limited access to government welfare schemes.
